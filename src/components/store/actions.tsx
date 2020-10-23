@@ -8,9 +8,9 @@ export const add = () :object => {
     }
 }
 
-export const del = (i: number) :object => {
+export const del = (value: number) :object => {
     return {
         type: ACTION_DEL,
-        payload: i
+        payload: value
     }
 }

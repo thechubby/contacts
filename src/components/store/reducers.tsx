@@ -1,19 +1,27 @@
 import { ACTION_ADD } from "../Contacts";
 import { ACTION_DEL } from "../Contacts";
 
-let notes: Array<string> = ['Приготовить поесть', 'Убраться в квартире','Сходить в магазин']
+interface StateInterface {
+    notes: any
+}
 
-export const rootReducer = (state = notes, action: any) => {
+let initialState: StateInterface = {
+    notes: ['Приготовить поесть', 'Убраться в квартире','Сходить в магазин']
+};
+
+export const rootReducer = (state = initialState, action: any) :any => {
     switch (action.type) {
         case ACTION_ADD:
+            let addState = state.notes.push(action.payload)
             return {
                 ...state,
-                notes: action.payload
+                notes: addState
             }
         case ACTION_DEL:
+            let delState = state.notes.splice(action.payload, 1)
             return {
                 ...state,
-                notes: notes.splice(action.payload,1)
+                notes: delState
             }
     }
     return state;

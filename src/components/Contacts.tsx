@@ -21,19 +21,11 @@ export class Contacts extends React.Component<PropsInterface, StateInterface> {
     constructor(props: PropsInterface) {
         super(props);
         this.state = {};
-        this.clickHandler = this.clickHandler.bind(this)
-    }
-
-    clickHandler = (i: number) => {
-        return (event: React.MouseEvent) => {
-            del(i)
-            event.preventDefault();
-        }
     }
 
     render(): React.ReactNode {
 
-        let { notes, add, del } = this.props;
+        let { notes, add } = this.props;
 
         return(
             <div>
@@ -43,10 +35,12 @@ export class Contacts extends React.Component<PropsInterface, StateInterface> {
                     id="input"
                 />
                 <ul>
-                    {notes.map((n, i) =>
+                    {this.props.notes.map((n: string, i: number) =>
                         (<li
-                            key={i}><button onClick={this.clickHandler(i)}>Удалить</button> {i} {n}
-                        </li>))}
+                            key={i}>
+                            <button onClick={() => del(i)}>Удалить</button>
+                            {i} {n}
+                    </li>))}
                 </ul>
             </div>)
     }
@@ -60,8 +54,8 @@ const putStateToProps = (state: PropsInterface) :object => {
 
 const putActionsToProps = (dispatch: Dispatch<any>) :object => {
     return {
-        add: bindActionCreators(add, dispatch),
-        del: bindActionCreators(del, dispatch)
+        del: bindActionCreators(del, dispatch),
+        add: bindActionCreators(add, dispatch)
     }
 }
 

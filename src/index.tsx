@@ -11,6 +11,7 @@ const store = createStore(rootReducer);
 
 ReactDOM.render(
     <Provider store={store}>
+        // @ts-ignore
         <Contacts/>
     </Provider>,
     document.getElementById('root')
