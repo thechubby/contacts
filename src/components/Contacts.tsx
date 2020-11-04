@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import {bindActionCreators, Dispatch} from "redux";
-import { add, del } from "./store/actions";
+import { add, del, changeInput } from "./store/actions";
 
 export const ACTION_ADD = 'ACTION_ADD';
 export const ACTION_DEL = 'ACTION_DEL';
+export const ACTION_CHANGE_INPUT = 'ACTION_CHANGE_INPUT';
 
 interface StateInterface {
 
@@ -12,20 +13,21 @@ interface StateInterface {
 
 interface PropsInterface {
     notes: Array<string>,
-    add: () => {},
-    del: (i: number) => {}
+    input: string,
+    changeInput(newString: string): void,
+    add(): void,
+    del(i: number): void
 }
 
 export class Contacts extends React.Component<PropsInterface, StateInterface> {
 
     constructor(props: PropsInterface) {
         super(props);
-        this.state = {};
     }
 
     render(): React.ReactNode {
 
-        let { notes, add } = this.props;
+        let { notes, input, add, del, changeInput } = this.props;
 
         return(
             <div>
@@ -33,14 +35,22 @@ export class Contacts extends React.Component<PropsInterface, StateInterface> {
                 <input
                     type="text"
                     id="input"
+                    value={input}
+                    onChange=
+                        {
+                            (event) =>
+                            {
+                                changeInput(event.target.value)
+                            }
+                        }
                 />
                 <ul>
-                    {this.props.notes.map((n: string, i: number) =>
+                    {React.Children.map(notes, (n: string, i: number) =>
                         (<li
-                            key={i}>
+                            key={n}>
                             <button onClick={() => del(i)}>Удалить</button>
                             {i} {n}
-                    </li>))}
+                        </li>))}
                 </ul>
             </div>)
     }
@@ -55,7 +65,8 @@ const putStateToProps = (state: PropsInterface) :object => {
 const putActionsToProps = (dispatch: Dispatch<any>) :object => {
     return {
         del: bindActionCreators(del, dispatch),
-        add: bindActionCreators(add, dispatch)
+        add: bindActionCreators(add, dispatch),
+        changeInput: bindActionCreators(changeInput, dispatch)
     }
 }
 
